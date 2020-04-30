@@ -41,11 +41,11 @@ def region(grid_smt, i):
             res.append(row[c])
     return res
 
-# def show_differences(g1, g2):
-#     for rows in zip(g1, g2):
-#         for els in zip(*rows):
-#             if els[0] != els[1]:
-
+def column(grid_smt, i):
+    col = []
+    for r in range(len(grid_smt)):
+        col.append(grid_smt[r][i])
+    return col
 
 def print_grid(grid, printer=lambda r, c, x: x):
     for rix, row in enumerate(grid):
@@ -84,16 +84,7 @@ if __name__ == "__main__":
     domains = And([And([constrain(n) for n in row]) for row in puzzle_smt])
 
     rows_unique = And([AllDifferent(r) for r in puzzle_smt])
-
-    cols = []
-    for c in range(len(puzzle_smt[0])):
-        col = []
-        for r in range(len(puzzle_smt)):
-            col.append(puzzle_smt[r][c])
-        cols.append(col)
-
-    cols_unique = And([AllDifferent(c) for c in cols])
-
+    cols_unique = And([AllDifferent(column(puzzle_smt, i)) for i in range(9)])
     regions_unique = And([AllDifferent(region(puzzle_smt, i)) for i in range(9)])
 
     problem = And(rows_unique, cols_unique, regions_unique)
