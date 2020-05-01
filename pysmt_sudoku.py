@@ -91,8 +91,13 @@ if __name__ == "__main__":
     formula = And(domains, problem)
 
     # Solve it!
-    print("Solvable? ", is_sat(formula))
+    solvable = is_sat(formula)
+    print("Solvable? ", solvable)
     model = get_model(formula)
+
+    if not solvable:
+        sys.exit(0)
+
     solution_smt = [[model.get_py_value(e) for e in row] for row in puzzle_smt]
 
     # Print the results
